@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\User;
+use Berkayk\OneSignal\OneSignalFacade;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -34,7 +35,7 @@ class SendNotificationJob implements ShouldQueue
     public function handle()
     {
         $user = $this->user;
-        Log::info("Job => Send Notification user: {$user->id}");
+        OneSignalFacade::sendNotificationToAll("Message Success User: {$user->id}", $url = null, $data = null, $buttons = null, $schedule = null);
         $u = User::find($user->id);
         $u->notify_note_one = true;
         $u->save();
